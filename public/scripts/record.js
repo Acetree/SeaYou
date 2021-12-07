@@ -102,7 +102,10 @@ function recStop() {
         console.log(blob, (window.URL || webkitURL).createObjectURL(blob), "时长:" + duration + "ms");
 
         recBlob = blob;
-        console.log("已录制mp3：" + duration + "ms " + blob.size + "字节，可以点击播放、上传了", 2);
+        console.log("已录制mp3：" + duration + "ms " + blob.size + "字节，可以点击播放上传了");
+
+        // upload to server
+        recUpload();
 
     }, function (msg) {
         console.log("录音失败:" + msg, 1);
@@ -139,7 +142,7 @@ function recUpload() {
         return;
     };
 
-    
+
 
 
 
@@ -178,20 +181,28 @@ function recUpload() {
     // };
     // reader.readAsDataURL(blob);
 
-    // /***方式二：使用FormData用multipart/form-data表单上传文件***/
-    // var form = new FormData();
-    // form.append("upfile", blob, "recorder.mp3"); //和普通form表单并无二致，后端接收到upfile参数的文件，文件名为recorder.mp3
+    /***方式二：使用FormData用multipart/form-data表单上传文件***/
+    var form = new FormData();
+    form.append("upfile", blob, "recorder.mp3"); //和普通form表单并无二致，后端接收到upfile参数的文件，文件名为recorder.mp3
     
     // var xhr = new XMLHttpRequest();
     // xhr.open("POST", api);
     // xhr.onreadystatechange = onreadystatechange("上传方式二【FormData】");
     // xhr.send(form);
+
+    $.ajax({
+        method: "POST",
+        url: myUrl+"uploadRecording",
+        data: form,
+        processData: false,
+        contentType: false,
+    })
+        .done(function (msg) {
+            console.log("Data Saved: " + msg);
+            recClose();
+        });
+
 };
-
-
-
-
-
 
 
 

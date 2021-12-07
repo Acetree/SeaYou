@@ -86,10 +86,7 @@ $(function () {
     
     $('#complete-button').click(()=>{
         recStop();
-        // upload to server
-        
-
-        recClose();
+        // close the recorder when upload finished
     });
 
 

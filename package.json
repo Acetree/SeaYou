@@ -9,7 +9,12 @@
   "author": "Shu Zhang",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "lodash": "^4.17.21",
+    "morgan": "^1.10.0",
     "nedb": "^1.8.0",
     "nodemon": "^2.0.15"
   }
