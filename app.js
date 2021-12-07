@@ -18,7 +18,7 @@ app.use(fileUpload({
 //add other middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 //start app
@@ -45,7 +45,7 @@ db.loadDatabase();
 
 app.use('/', express.static('public'));
 
-app.use('/lookFor', function(req,res){
+app.use('/lookFor', function (req, res) {
   res.sendFile("public/look-for.html");
 });
 
@@ -82,30 +82,61 @@ app.post('/saveRecording', (request, response) => {
 
 })
 
-app.post('/uploadRecording', async (req, res) => {
+app.post('/uploadRecording', async (request, response) => {
   try {
-    if (!req.files) {
-      res.send({
+    if (!request.files) {
+      response.send({
         status: false,
         message: 'No file uploaded'
       });
     } else {
-     
-      let upfile = req.files.upfile;
-      upfile.mv('userRecording/' + upfile.name);
 
-      //send response
-      res.send({
-        status: true,
-        message: 'File is uploaded',
-        data: {
-          name: upfile.name,
-          mimetype: upfile.mimetype,
-          size: upfile.size
+      let upfile = request.files.upfile;
+      let fileName = upfile.name;
+      upfile.mv('userRecording/' + fileName);
+
+      let timeType = request.body.timeType;
+
+      Date.prototype.Format = function (fmt) { //author: meizz 
+        var o = {
+          "M+": this.getMonth() + 1, //月份 
+          "d+": this.getDate(), //日 
+          "h+": this.getHours(), //小时 
+          "m+": this.getMinutes(), //分 
+          "s+": this.getSeconds(), //秒 
+          "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+          "S": this.getMilliseconds() //毫秒 
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+      }
+
+      let timeString = new Date().Format("yyyyMMddhhmmssS");
+
+      let item = {
+        timeType: timeType,
+        fileName: fileName,
+        timeString: timeString
+      };
+
+      db.insert(item, (errors, newDocs) => {
+        if (errors) {
+          response.send({
+            status: false,
+            message: 'File uploaded failed'
+          });
+        } else {
+          response.send({
+            status: true,
+            message: 'File is uploaded'
+          });
         }
-      });
+      })
+
     }
-  } catch (err) {
-    res.status(500).send(err);
+  } catch (errors) {
+    response.status(500).send(errors);
   }
 });

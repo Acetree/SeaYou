@@ -33,8 +33,8 @@ var recOpen = function () {//一般在显示出录音按钮或相关的录音界
 
         // 打开录音后直接开始
         isOpened = 1;
-        recStart(); 
-        
+        recStart();
+
 
     }, function (msg, isUserNotAllow) {//用户拒绝未授权或不支持
         dialogCancel(); //如果开启了弹框，此处需要取消
@@ -183,23 +183,64 @@ function recUpload() {
 
     /***方式二：使用FormData用multipart/form-data表单上传文件***/
     var form = new FormData();
-    form.append("upfile", blob, "recorder.mp3"); //和普通form表单并无二致，后端接收到upfile参数的文件，文件名为recorder.mp3
-    
-    // var xhr = new XMLHttpRequest();
-    // xhr.open("POST", api);
-    // xhr.onreadystatechange = onreadystatechange("上传方式二【FormData】");
-    // xhr.send(form);
+    let recordDate = new Date();
+    let recordHour = recordDate.getHours();
+
+    // 对Date的扩展，将 Date 转化为指定格式的String
+    // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符， 
+    // 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字) 
+    // 例子： 
+    // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423 
+    // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18 
+    Date.prototype.Format = function (fmt) { //author: meizz 
+        var o = {
+            "M+": this.getMonth() + 1, //月份 
+            "d+": this.getDate(), //日 
+            "h+": this.getHours(), //小时 
+            "m+": this.getMinutes(), //分 
+            "s+": this.getSeconds(), //秒 
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+            "S": this.getMilliseconds() //毫秒 
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+
+    let timeString = recordDate.Format("yyyyMMddhhmmssS");
+
+
+    form.append("upfile", blob, "recorder_" + timeString + ".mp3"); //和普通form表单并无二致，后端接收到upfile参数的文件，文件名为recorder.mp3
+
+    let timeType = 0;
+    if (recordHour <= 6 || recordHour >= 20) {
+        // night
+        timeType = 2;
+    } else if (recordHour > 6 && recordHour < 17) {
+        // daytime
+        timeType = 1;
+    } else {
+        // dusk
+        timeType = 0;
+    }
+
+    form.append("time", timeType);
 
     $.ajax({
         method: "POST",
-        url: myUrl+"uploadRecording",
+        url: myUrl + "uploadRecording",
         data: form,
         processData: false,
         contentType: false,
     })
-        .done(function (msg) {
-            console.log("Data Saved: " + msg);
-            recClose();
+        .done(function (response) {
+            if (response.status) {
+                console.log(response.message);
+                recClose();
+            } else {
+                alert(response.message + ", please try again");
+            }
         });
 
 };
