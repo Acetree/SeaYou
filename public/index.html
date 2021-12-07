@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>SEAYOU</title>
+    <script src="scripts/jquery-3.6.0.min.js" type="text/javascript"></script>
+    <script src="scripts/recorder.mp3.min.js" type="text/javascript"></script>
+    <link href="style/common.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+    <section class="main-container">
+        <section class="header">
+            <img class="back" src="assets/back.png" style="padding-bottom: 5px;padding-left: 30px;">
+            <div class="header-space"></div>
+            <img class="logo" src="assets/SEAYOU.png">
+            <div class="header-space"></div>
+            <img class="list" src="assets/box.png" style="padding-top: 5px;">
+        </section>
+        <section class="footer">
+            <img id="start-button" src="assets/start-button.png">
+        </section>
+        <section class="sea-shell-list">
+            <div class="guide">Please feel free to pick one</div>
+            <div class="sea-shell-div">
+                <img class="sea-shell-image" src="assets/sea-shell-1.png">
+            </div>
+        </section>
+        <section class="record vertical-container">
+            <div class="guide">Press and hold to record</div>
+            <div class="sea-shell-record-div" id="record-button">
+                <img class="sea-shell-image" src="assets/sea-shell-1.png">
+            </div>
+           
+            <div class="big-white-button" id="complete-button">Complete</div>
+        </section>
+        <section class="listen">
+            <div class="guide">Put the seashell to your ear</div>
+            <div class="sea-shell-listen-div">
+                <img class="sea-shell-image" src="assets/sea-shell-1.png">
+            </div>
+        </section>
+
+
+    </section>
+
+    <img id="background-image" src="assets/sea-overlay.png">
+
+
+    <!-- background video and audio -->
+    <video id="video" autoplay loop muted playsinline>
+        <source src="assets/wave.mp4" type="video/mp4" />
+    </video>
+    <audio id="bgm" autoplay="autoplay" loop="loop" preload="auto" controls="controls" src="assets/wave.mp3">
+    </audio>
+
+    <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
+    <!-- <script src="scripts/recorder.js"></script> -->
+    <script src="scripts/record.js" type="text/javascript"></script>
+    <script src="scripts/index.js" type="text/javascript"></script>
+</body>
+
+</html>
