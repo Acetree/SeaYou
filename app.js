@@ -38,7 +38,7 @@ app.use(express.urlencoded({
 
 //Init datastorage
 let dataStore = require('nedb');
-let db = new dataStore('seeyou.db');
+let db = new dataStore('seayou.db');
 db.loadDatabase();
 
 
