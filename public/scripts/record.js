@@ -66,6 +66,7 @@ function recStart() {//打开了录音后才能进行start、stop调用
     if (rec && Recorder.IsOpen()) {
         recBlob = null;
         rec.start();
+        $('#record-button').html('Pause');
         console.log("已开始录音...");
         isRecording = 1;
     } else {
@@ -77,6 +78,8 @@ function recStart() {//打开了录音后才能进行start、stop调用
 function recPause() {
     if (rec && Recorder.IsOpen()) {
         rec.pause();
+        
+        $('#record-button').html('Resume');
         isRecording = 0;
     } else {
         console.log("未打开录音", 1);
@@ -86,6 +89,7 @@ function recPause() {
 function recResume() {
     if (rec && Recorder.IsOpen()) {
         rec.resume();
+        $('#record-button').html('Pause');
         isRecording = 1;
     } else {
         console.log("未打开录音", 1);
@@ -142,57 +146,12 @@ function recUpload() {
         return;
     };
 
-
-
-
-
-    //本例子假设使用原始XMLHttpRequest请求方式，实际使用中自行调整为自己的请求方式
-    //录音结束时拿到了blob文件对象，可以用FileReader读取出内容，或者用FormData上传
-
-    // var api = "https://xx.xx/test_request";
-    // var onreadystatechange = function (title) {
-    //     return function () {
-    //         if (xhr.readyState == 4) {
-    //             if (xhr.status == 200) {
-    //                 console.log(title + "上传成功", 2);
-    //             } else {
-    //                 console.log(title + "没有完成上传，演示上传地址无需关注上传结果，只要浏览器控制台内Network面板内看到的请求数据结构是预期的就ok了。", "#d8c1a0");
-
-    //                 console.error(title + "上传失败", xhr.status, xhr.responseText);
-    //             };
-    //         };
-    //     };
-    // };
-    // console.log("开始上传到" + api + "，请求稍后...");
-
-    // /***方式一：将blob文件转成base64纯文本编码，使用普通application/x-www-form-urlencoded表单上传***/
-    // var reader = new FileReader();
-    // reader.onloadend = function () {
-    //     var postData = "";
-    //     postData += "mime=" + encodeURIComponent(blob.type);//告诉后端，这个录音是什么格式的，可能前后端都固定的mp3可以不用写
-    //     postData += "&upfile_b64=" + encodeURIComponent((/.+;\s*base64\s*,\s*(.+)$/i.exec(reader.result) || [])[1]) //录音文件内容，后端进行base64解码成二进制
-    //     \
-
-    //     var xhr = new XMLHttpRequest();
-    //     xhr.open("POST", api);
-    //     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    //     xhr.onreadystatechange = onreadystatechange("上传方式一【Base64】");
-    //     xhr.send(postData);
-    // };
-    // reader.readAsDataURL(blob);
-
     /***方式二：使用FormData用multipart/form-data表单上传文件***/
     var form = new FormData();
     let recordDate = new Date();
     let recordHour = recordDate.getHours();
 
-    // 对Date的扩展，将 Date 转化为指定格式的String
-    // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符， 
-    // 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字) 
-    // 例子： 
-    // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423 
-    // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18 
-    Date.prototype.Format = function (fmt) { //author: meizz 
+    Date.prototype.Format = function (fmt) { 
         var o = {
             "M+": this.getMonth() + 1, //月份 
             "d+": this.getDate(), //日 
@@ -225,11 +184,13 @@ function recUpload() {
         timeType = 0;
     }
 
-    form.append("time", timeType);
+    let seaShellType = currentSeaShellType;
+    form.append("timeType", timeType);
+    form.append("seaShellType", seaShellType);
 
     $.ajax({
         method: "POST",
-        url: myUrl + "uploadRecording",
+        url: myUrl + "public/assets/userRecording",
         data: form,
         processData: false,
         contentType: false,
@@ -238,6 +199,8 @@ function recUpload() {
             if (response.status) {
                 console.log(response.message);
                 recClose();
+                // return to home page
+                backToHome();
             } else {
                 alert(response.message + ", please try again");
             }

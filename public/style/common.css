@@ -1,25 +1,16 @@
 * {
     margin: 0px;
     padding: 0px;
-    -webkit-touch-callout: none;
+    /* -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none;
+    user-select: none; */
 }
 
 video {
     position: fixed;
-    right: 0px;
     bottom: 0px;
-    min-width: 100%;
-    min-height: 100%;
-    height: 100%;
-    width: auto;
-    /*加滤镜*/
-    /*filter: blur(15px); //背景模糊设置 */
-    /*-webkit-filter: grayscale(100%);*/
-    /*filter:grayscale(100%); //背景灰度设置*/
     z-index: -11;
 }
 
@@ -82,10 +73,16 @@ audio {
     display: none;
 }
 
-.vertical-container{
+.vertical-container {
     display: flex;
     flex-flow: column;
     align-items: center;
+}
+
+.small-guide {
+    font-size: 32px;
+    font-weight: 100;
+
 }
 
 .guide {
@@ -98,11 +95,21 @@ audio {
     width: 400px;
     height: 100px;
     border: solid white 6px;
-    background:rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.6);
     border-radius: 100px;
     font-size: 36px;
     font-weight: 900;
     line-height: 100px;
     text-align: center;
+
 }
 
+.button-group {
+    margin-top: -400px;
+    height: 300px;
+    justify-content: space-between;
+}
+
+.bold-text {
+    font-weight: 900;
+}

@@ -1,3 +1,5 @@
+
+
 //Server with Express
 const { request, response } = require('express');
 const express = require('express');
@@ -6,6 +8,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const _ = require('lodash');
+
+
 
 
 const app = express();
@@ -45,42 +49,68 @@ db.loadDatabase();
 
 app.use('/', express.static('public'));
 
-app.use('/lookFor', function (req, res) {
-  res.sendFile("public/look-for.html");
-});
 
-
-
-
-// app.get('/showPokemon', (request, response) => {
-//   db.find({}, (errors, data) => {
-//     if(errors){
-//       response.json({ status: "task failed" });
-//     }else{
-//       let obj = { data: data };
-//       response.json(obj);
-//     }
-//   });
-// });
-
-app.post('/saveRecording', (request, response) => {
-
-  let currentDate = new Date();
-  let obj = {
-    date: currentDate,
-    height: request.body.height,
-    weight: request.body.weight
-  }
-
-  db.insert(obj, (errors, newDocs) => {
+app.post('/getSomeRecords', (request, response) => {
+  db.find({}, (errors, data) => {
     if (errors) {
-      response.json({ status: "task failed" });
+      response.json({ status: false });
     } else {
-      response.json({ status: "success" });
-    }
-  })
 
-})
+      function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+      }
+
+      let numsToReturn;
+      let seaShellList = [];
+
+      function seaShellExist(randomSeaShellIndex) {
+        for (let i = 0; i < seaShellList.length; i++) {
+          if (seaShellList[i]._id == randomSeaShellIndex) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      if (data.length > 3) {
+        numsToReturn = 2 + getRandomInt(3);
+        while (numsToReturn > 0) {
+          let randomSeaShellIndex = getRandomInt(data.length);
+          if (!seaShellExist(data[randomSeaShellIndex]._id)) {
+            let s = {
+              fileName: data[randomSeaShellIndex].fileName,
+              seaShellType: data[randomSeaShellIndex].seaShellType
+            };
+            seaShellList.push(s);
+            numsToReturn--;
+          }
+        }
+      } else {
+        for (let i = 0; i < data.length; i++) {
+          let s = {
+            fileName: data[i].fileName,
+            seaShellType: data[i].seaShellType
+          };
+          seaShellList.push(s);
+        }
+      }
+
+      let remainNum = 4 + getRandomInt(4) - seaShellList.length;
+
+      for (let i = 0; i < remainNum; i++) {
+        let s = {
+          fileName: "",
+          seaShellType: getRandomInt(5)
+        };
+        seaShellList.splice(getRandomInt(seaShellList.length), 0, s);
+      }
+      
+
+      let obj = { status: true, data: seaShellList };
+      response.json(obj);
+    }
+  });
+});
 
 app.post('/uploadRecording', async (request, response) => {
   try {
@@ -96,8 +126,9 @@ app.post('/uploadRecording', async (request, response) => {
       upfile.mv('userRecording/' + fileName);
 
       let timeType = request.body.timeType;
+      let seaShellType = request.body.seaShellType;
 
-      Date.prototype.Format = function (fmt) { //author: meizz 
+      Date.prototype.Format = function (fmt) {
         var o = {
           "M+": this.getMonth() + 1, //月份 
           "d+": this.getDate(), //日 
@@ -116,6 +147,7 @@ app.post('/uploadRecording', async (request, response) => {
       let timeString = new Date().Format("yyyyMMddhhmmssS");
 
       let item = {
+        seaShellType: seaShellType,
         timeType: timeType,
         fileName: fileName,
         timeString: timeString

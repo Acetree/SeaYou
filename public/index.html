@@ -4,64 +4,136 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=0">
+    <!-- <meta name="viewport" content="width=640,target-densitydpi=device-dpi,user-scalable=no"> -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>SEAYOU</title>
+
+    <!-- JS Library -->
     <script src="scripts/jquery-3.6.0.min.js" type="text/javascript"></script>
     <script src="scripts/recorder.mp3.min.js" type="text/javascript"></script>
+    <script src="scripts/swiper.min.js" type="text/javascript"></script>
+
+    <!-- CSS -->
     <link href="style/common.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="style/swiper.min.css">
+    <link rel="stylesheet" href="style/swiper.css">
 
 </head>
 
 <body>
+
+
+
     <section class="main-container">
+
+        <!-- Header -->
         <section class="header">
             <img class="back" src="assets/back.png" style="padding-bottom: 5px;padding-left: 30px;">
             <div class="header-space"></div>
             <img class="logo" src="assets/SEAYOU.png">
             <div class="header-space"></div>
-            <img class="list" src="assets/box.png" style="padding-top: 5px;">
+            <img class="list-icon" src="assets/box.png" style="padding-top: 5px;">
         </section>
+
+        <!-- Home Page -->
         <section class="footer">
             <img id="start-button" src="assets/start-button.png">
         </section>
-        <section class="sea-shell-list">
-            <div class="guide">Please feel free to pick one</div>
-            <div class="sea-shell-div">
-                <img class="sea-shell-image" src="assets/sea-shell-1.png">
+
+        <!-- Sea Shell List -->
+        <section class="sea-shell-list not-in-home-page">
+            <div class="guide"><span class="small-guide">Randomly, you found <span id="countOfSeaShell">-</span> sea
+                    shells</span><br /><br />Feel free to pick up one</div>
+
+
             </div>
         </section>
-        <section class="record vertical-container">
-            <div class="guide">Press and hold to record</div>
-            <div class="sea-shell-record-div" id="record-button">
-                <img class="sea-shell-image" src="assets/sea-shell-1.png">
+
+        <!-- Record Page -->
+        <section class="record not-in-home-page vertical-container">
+            <div class="guide"></div>
+            <div class="sea-shell-record-div">
+                <img class="sea-shell-image" id="will-record" src="assets/sea-shell/sea-shell-1.png">
             </div>
-           
-            <div class="big-white-button" id="complete-button">Complete</div>
+            <div class="button-group vertical-container">
+                <div class="big-white-button" id="record-button">Record</div>
+                <div class="big-white-button" id="complete-button">Complete</div>
+            </div>
         </section>
-        <section class="listen">
-            <div class="guide">Put the seashell to your ear</div>
-            <div class="sea-shell-listen-div">
-                <img class="sea-shell-image" src="assets/sea-shell-1.png">
+
+        <!-- Listen Page -->
+        <section class="listen not-in-home-page">
+            <div class="guide"></div>
+            <div class="sea-shell-listen-div" id="listen-button">
+                <img class="sea-shell-image" id="will-listen" src="assets/sea-shell/sea-shell-1.png">
             </div>
         </section>
 
 
     </section>
 
+
+    <div id="sea-shell-swiper">
+        <!-- Swiper -->
+        <div class="swiper-container show-swiper" id="sea-swiper">
+            <div class="swiper-wrapper">
+                <!-- <div class="swiper-slide">
+                    <div class="sea-shell-block">
+                        <div class="img">
+                            <img src="assets/sea-shell/sea-shell-0.png" width="100%">
+                        </div>
+                        <div class="detail">
+                            <h2>This sea shell is empty.
+                            You can record you own story in it.</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="sea-shell-block">
+                        <div class="img">
+                            <img src="assets/sea-shell/sea-shell-0.png" width="100%">
+                        </div>
+                        <div class="detail">
+                            <h2>This sea shell is empty.
+                                You can record you own story in it.</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="sea-shell-block">
+                        <div class="img">
+                            <img src="assets/sea-shell/sea-shell-0.png" width="100%">
+                        </div>
+                        <div class="detail">
+                            <h2>This sea shell is empty.
+                                You can record you own story in it.</h2>
+                        </div>
+                    </div>
+                </div> -->
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Background image, video and audio -->
     <img id="background-image" src="assets/sea-overlay.png">
 
-
-    <!-- background video and audio -->
     <video id="video" autoplay loop muted playsinline>
         <source src="assets/wave.mp4" type="video/mp4" />
     </video>
     <audio id="bgm" autoplay="autoplay" loop="loop" preload="auto" controls="controls" src="assets/wave.mp3">
     </audio>
 
-    <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
-    <!-- <script src="scripts/recorder.js"></script> -->
-    <script src="scripts/record.js" type="text/javascript"></script>
+
+    <!-- Script -->
     <script src="scripts/index.js" type="text/javascript"></script>
+
+    <!-- <script src="scripts/swiper.js" type="text/javascript"></script> -->
+    <script src="scripts/record.js" type="text/javascript"></script>
+
+
+
 </body>
 
 </html>

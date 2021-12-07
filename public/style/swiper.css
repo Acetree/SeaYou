@@ -1,0 +1,54 @@
+#sea-shell-swiper {
+    position: relative;
+    top: 350px;
+}
+
+/* .show-swiper {
+    z-index: 3;
+    top: 80px;
+} */
+
+.swiper-container {
+    overflow: visible !important;
+}
+
+
+.show-swiper .swiper-slide {
+    width: 400px;
+}
+
+.show-swiper .swiper-slide .sea-shell-block {
+    width: 300px;
+    height: 440px;
+    padding: 10px;
+    margin: 40px 0;
+    border-radius: 30px;
+    /* border: solid 2px black; */
+    box-shadow: 0 4px 30px 14px rgb(0 0 0 / 15%);
+}
+
+
+.sea-shell-block .img {
+    width: 100%;
+    margin-top: -240px;
+}
+
+
+.sea-shell-block .detail {
+    width: 100%;
+
+}
+
+.sea-shell-block .detail h2 {
+    font-weight: 100;
+    color: #312f30;
+    font-size: 24px;
+    line-height: 36px;
+    margin-bottom: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+.sea-shell-block-not-empty {
+    background-color: rgb(169 144 124 / 52%);
+}
