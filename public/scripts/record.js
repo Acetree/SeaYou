@@ -38,12 +38,12 @@ var recOpen = function () {//一般在显示出录音按钮或相关的录音界
 
     }, function (msg, isUserNotAllow) {//用户拒绝未授权或不支持
         dialogCancel(); //如果开启了弹框，此处需要取消
-        console.log((isUserNotAllow ? "UserNotAllow，" : "") + "打开录音失败：" + msg, 1);
+        alert((isUserNotAllow ? "UserNotAllow，" : "") + "Fail to open recording session" + msg, 1);
     });
 
     window.waitDialogClick = function () {
         dialogCancel();
-        console.log("打开失败：权限请求被忽略，<span style='color:#f00'>用户主动点击的弹窗</span>", 1);
+        alert("Fail to open recording session: Permission needed，<span style='color:#f00'>用户主动点击的弹窗</span>", 1);
     };
 };
 
@@ -190,7 +190,7 @@ function recUpload() {
 
     $.ajax({
         method: "POST",
-        url: myUrl + "public/assets/userRecording",
+        url: myUrl + "uploadRecording",
         data: form,
         processData: false,
         contentType: false,

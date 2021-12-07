@@ -123,7 +123,7 @@ app.post('/uploadRecording', async (request, response) => {
 
       let upfile = request.files.upfile;
       let fileName = upfile.name;
-      upfile.mv('userRecording/' + fileName);
+      upfile.mv('public/assets/userRecording/' + fileName);
 
       let timeType = request.body.timeType;
       let seaShellType = request.body.seaShellType;
